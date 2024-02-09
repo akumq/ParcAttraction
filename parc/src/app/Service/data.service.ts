@@ -13,6 +13,15 @@ export class DataService {
     return data;
   }
 
+  public getDataHeader(url: string, token: string) {
+    let data = this.http.get(url, {
+      headers: { 
+        'user': token
+      }
+    });
+    return data;
+  }
+
   public postData(url: string, data: any) {
     let result = this.http.post(url, data);
     return result;

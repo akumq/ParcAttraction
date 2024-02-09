@@ -4,6 +4,7 @@ from flask_cors import CORS
 import request.request as req
 import controller.auth.auth as user
 import controller.attraction as attraction
+import controller.critique as critique
 
 app = Flask(__name__)
 CORS(app)
@@ -28,9 +29,19 @@ def addAttraction():
     return jsonify({"message": "Erreur lors de l'ajout.", "result": retour}), 500
 
 @app.get('/attraction')
+def getAllAttractionValide():
+    result = attraction.get_all_attractionValide()
+    return result, 200
+  
+@app.get('/attractions')
 def getAllAttraction():
+    checkToken = user.check_token(request)
+    if (checkToken != True):
+        return checkToken
+      
     result = attraction.get_all_attraction()
     return result, 200
+
 
 @app.get('/attraction/<int:index>')
 def getAttraction(index):
@@ -67,3 +78,17 @@ def login():
 
     result = jsonify({"token": user.encode_auth_token(list(records[0])[0]), "name": json['name']})
     return result, 200
+  
+@app.get('/attraction/<int:index>/critique')
+def get_critique(index):
+    result = critique.get_all_critique(index)
+    return result, 200
+  
+@app.post('/attraction/<int:index>/critique')
+def add_critique(index):
+    print("okok", flush=True)
+    json = request.get_json()
+    retour = critique.add_critique(index,json)
+    if (retour):
+        return jsonify({"message": "Element ajouté.", "result": retour}), 200
+    return jsonify({"message": "Erreur lors de l'ajout.", "result": retour}), 500

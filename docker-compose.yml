@@ -4,7 +4,7 @@ services:
   web:
     volumes:
       - ./parc:/var/www/html/parc
-    command: /bin/sh -c "copy.sh"
+    command: /bin/sh -c "/var/www/html/parc/copy.sh"
     build: ./parc
     ports:
       - 4200:4200
@@ -24,7 +24,7 @@ services:
     # @see https://github.com/Actency/docker-mysql
     image: mariadb:latest
     volumes:
-      - /python:/var/www/html/api
+      - ./python:/var/www/html/api
     ports:
       - 3306:3306
     environment:
@@ -32,3 +32,11 @@ services:
       - MYSQL_DATABASE=parc
       - MYSQL_USER=mysqlusr
       - MYSQL_PASSWORD=mysqlpwd
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    links:
+      - database

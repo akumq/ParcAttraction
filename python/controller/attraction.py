@@ -1,4 +1,5 @@
 import request.request as req
+from flask import jsonify
 
 def add_attraction(data):
     print(data, flush=True)
@@ -24,9 +25,13 @@ def add_attraction(data):
 
     return id
 
+def get_all_attractionValide():
+    json = req.select_from_db("SELECT * FROM attraction Where visible = 1")
+    
+    return json
+  
 def get_all_attraction():
     json = req.select_from_db("SELECT * FROM attraction")
-    
     return json
 
 def get_attraction(id):
