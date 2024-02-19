@@ -49,6 +49,7 @@ def delete_attraction(id):
     if (not id):
         return False
 
+    req.delete_from_db("DELETE FROM critique WHERE attraction_id = ?", (id,))
     req.delete_from_db("DELETE FROM attraction WHERE attraction_id = ?", (id,))
 
     return True

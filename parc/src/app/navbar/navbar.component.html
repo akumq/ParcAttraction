@@ -1,0 +1,21 @@
+<!-- <mat-toolbar>
+  <span>Custom Toolbar</span>
+  <span><a routerLink="/accueil">Home</a></span>
+  <span><a routerLink="/attraction">Liste Attraction</a></span>
+  <div *ngIf="authService.isLoggedIn">
+    <button mat-stroked-button (click)="logout()">Déconnexion</button>
+  </div>
+</mat-toolbar> -->
+<mat-toolbar>
+  <button mat-button [matMenuTriggerFor]="matMenu" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+    <mat-icon >menu</mat-icon>
+  </button>
+  <span>Parc D'Attraction</span>
+  
+  <span class="example-spacer"></span>
+</mat-toolbar>
+
+<mat-menu #menu="matMenu">
+  <span><a routerLink="/accueil">Home</a></span>
+  <span><a routerLink="/attraction">Liste Attraction</a></span>
+</mat-menu>

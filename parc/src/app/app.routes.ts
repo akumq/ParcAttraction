@@ -1,4 +1,5 @@
 import { Router, Routes } from '@angular/router';
+
 import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
 import { AuthService } from './Service/auth.service';

@@ -28,3 +28,11 @@ def add_critique(id,data):
     id = req.insert_in_db(requete, (data["name"], data["text"], data["surname"], data["score"], data["attraction_id"]))
 
     return id
+  
+def delete_critique(id):
+    if (not id):
+        return False
+
+    req.delete_from_db("DELETE FROM critique WHERE critique_id = ?", (id,))
+
+    return True

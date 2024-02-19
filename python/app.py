@@ -92,3 +92,17 @@ def add_critique(index):
     if (retour):
         return jsonify({"message": "Element ajouté.", "result": retour}), 200
     return jsonify({"message": "Erreur lors de l'ajout.", "result": retour}), 500
+
+@app.delete('/critique/<int:index>')
+def deleteCritique(index):
+    # Fonction vérif token
+    checkToken = user.check_token(request)
+    if (checkToken != True):
+        return checkToken
+
+    json = request.get_json()
+    
+    if (critique.delete_critique(index)):
+        return "Element supprimé.", 200
+    return jsonify({"message": "Erreur lors de la suppression."}), 500
+  

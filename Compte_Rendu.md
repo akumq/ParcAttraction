@@ -87,7 +87,7 @@ VALUES ('Super Attraction je recommande','Super', 'Fan', 4,
 > il faut désormais que je fasse l'api pour necessaire a la creation de critique
 
 
-#### attraction/$id/critique
+#### GET | attraction/$id/critique 
 
 > Permet d'obtenir toutes les critique d'une seul attraction
 
@@ -114,3 +114,84 @@ def get_critique(index):
     result = critique.get_all_critique(index)
     return result, 200
 ```
+
+#### POST | attraction/$id/critique
+> Actuellement on peut lire les critiques mais il faut aussis pouvoir en créé librement.
+
+> j'ajoute dans mon controller la fonction add_critique qui permet d'ajouter une critique par rapport au information qu'on envoie dans la requête post
+
+```py
+def add_critique(id,data):
+    print(data, flush=True)
+    if (not "name" in data or data["name"] == ""):
+        return False
+    
+    if (not "text" in data or data["text"] == ""):
+        return False
+      
+    if (not "surname" in data or data["surname"] == ""):
+        return False
+
+    if (not "score" in data or data["score"] is None):
+        return False
+
+    if (not "attraction_id" in data or data["attraction_id"] is None):
+        return False
+
+    requete = "INSERT INTO critique (name, text, surname, score, attraction_id) VALUES (?, ?, ?, ?, ?);"
+    id = req.insert_in_db(requete, (data["name"], data["text"], data["surname"], data["score"], data["attraction_id"]))
+
+    return id
+```
+
+> Ensuite je rajoute la route dans Django
+
+```py
+@app.post('/attraction/<int:index>/critique')
+def add_critique(index):
+    print("okok", flush=True)
+    json = request.get_json()
+    retour = critique.add_critique(index,json)
+    if (retour):
+        return jsonify({"message": "Element ajouté.", "result": retour}), 200
+    return jsonify({"message": "Erreur lors de l'ajout.", "result": retour}), 500
+```
+#### Delete | critique/$id
+
+
+> il faut aussi permettre de supprimer les critiques, mais avant pour liberer de l'espace dans la base de donnée je fais en sorte que les critiques de l'application soit supprimé en même temps que l'application, il me suffit de rajouter une requete SQL en me servant de la clé étrangère attraction_id présente dans chaque critique
+
+```py
+req.delete_from_db("DELETE FROM critique WHERE attraction_id = ?", (id,))
+```
+
+> Ensuite j'ajoute a mon controller une fonction delete_critique qui permet de supprimer une critique connaissant son id
+
+```py
+def delete_critique(id):
+    if (not id):
+        return False
+
+    req.delete_from_db("DELETE FROM critique WHERE critique_id = ?", (id,))
+
+    return True
+```
+
+> Puis j'ajoute la route et je vérifie si l'utilisateur est bien admin 
+
+```py
+@app.delete('/critique/<int:index>')
+def deleteCritique(index):
+    # Fonction vérif token
+    checkToken = user.check_token(request)
+    if (checkToken != True):
+        return checkToken
+
+    json = request.get_json()
+    
+    if (critique.delete_critique(index)):
+        return "Element supprimé.", 200
+    return jsonify({"message": "Erreur lors de la suppression."}), 500
+  
+```
+
