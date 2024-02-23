@@ -1,21 +1,35 @@
-<!-- <mat-toolbar>
-  <span>Custom Toolbar</span>
-  <span><a routerLink="/accueil">Home</a></span>
-  <span><a routerLink="/attraction">Liste Attraction</a></span>
-  <div *ngIf="authService.isLoggedIn">
-    <button mat-stroked-button (click)="logout()">Déconnexion</button>
-  </div>
-</mat-toolbar> -->
 <mat-toolbar>
-  <button mat-button [matMenuTriggerFor]="matMenu" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+  <button mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon >menu</mat-icon>
   </button>
   <span>Parc D'Attraction</span>
   
-  <span class="example-spacer"></span>
+  <span class="spacer"></span>
+  <div *ngIf="authService.isLoggedIn">
+    <button mat-stroked-button (click)="logout()">Déconnexion</button>
+  </div>
 </mat-toolbar>
 
 <mat-menu #menu="matMenu">
-  <span><a routerLink="/accueil">Home</a></span>
-  <span><a routerLink="/attraction">Liste Attraction</a></span>
+  <a mat-menu-item href="/">
+    <mat-icon>home</mat-icon>
+    <span>Accueil</span>
+  </a>
+  <a mat-menu-item href="/attraction">
+    <mat-icon>gesture</mat-icon>
+    <span>Attraction</span>
+  </a >
+  <div *ngIf="authService.isLoggedIn;  else loggedOut">
+    <a mat-menu-item href="/admin" >
+      <mat-icon>build</mat-icon>
+      <span>Admin</span>
+    </a>
+  </div>
+
+  <ng-template #loggedOut>
+    <a mat-menu-item href="/login" >
+      <mat-icon>build</mat-icon>
+      <span>Login</span>
+    </a>
+  </ng-template>
 </mat-menu>

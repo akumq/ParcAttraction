@@ -5,6 +5,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AuthService } from './Service/auth.service';
 import { inject } from '@angular/core';
 import { AccueilComponent } from './accueil/accueil.component';
+import { AttractionComponent } from './attraction/attraction.component';
 
 export const utilisateurEstConnecte = () => {
   const authService = inject(AuthService);
@@ -28,6 +29,10 @@ export const routes: Routes = [
       path: 'admin',
       component: AdminComponent,
       canActivate: [utilisateurEstConnecte]
+    },
+    {
+      path: 'attraction',
+      component: AttractionComponent,
     },
     {
       path: 'accueil',
