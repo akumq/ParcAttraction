@@ -81,14 +81,20 @@ def login():
   
 @app.get('/attraction/<int:index>/critique')
 def get_critique(index):
-    result = critique.get_all_critique(index)
+    result = critique.get_all_critique_id(index)
     return result, 200
   
-@app.post('/attraction/<int:index>/critique')
-def add_critique(index):
+@app.get('/attraction/critique')
+def getall_critique():
+    result = critique.get_all_critique()
+    return result, 200
+  
+  
+@app.post('/critique')
+def add_critique():
     print("okok", flush=True)
     json = request.get_json()
-    retour = critique.add_critique(index,json)
+    retour = critique.add_critique(json)
     if (retour):
         return jsonify({"message": "Element ajouté.", "result": retour}), 200
     return jsonify({"message": "Erreur lors de l'ajout.", "result": retour}), 500

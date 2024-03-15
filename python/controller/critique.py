@@ -1,13 +1,18 @@
 import request.request as req
 
 
-def get_all_critique(attraction_id):
+def get_all_critique_id(attraction_id):
     if (not attraction_id):
-        return False
+      return False
+    
     json = req.select_from_db("SELECT * FROM critique WHERE attraction_id = ?", (attraction_id,))
     return json
-
-def add_critique(id,data):
+  
+def get_all_critique():
+    json = req.select_from_db("SELECT * FROM critique")
+    return json
+  
+def add_critique(data):
     print(data, flush=True)
     if (not "name" in data or data["name"] == ""):
         return False

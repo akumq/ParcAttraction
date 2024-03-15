@@ -14,8 +14,7 @@
     <ng-container *ngIf="attractions | async">
       <ng-container *ngFor="let formulaireAttraction of formulaireAttractions; let indexForm = index;"
         [formGroup]="formulaireAttraction"
-        style="display: flex; flex-direction: column;"
-      >
+        style="display: flex; flex-direction: column;">
         <div class="attraction">
           <mat-form-field class="champ" appearance="fill">
             <mat-label>Nom</mat-label>
